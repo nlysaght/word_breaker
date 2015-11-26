@@ -17,20 +17,13 @@ namespace word_breaker
         }
         private static List<string> WordsFromUrl(Dictionary<string, string> dictionary, string urlValue)
         {
-            var wordsFound = new List<string>();
             var cleanUrl = CleanUrl(urlValue);
-            for (var outer = 0; outer < cleanUrl.Length; outer++)
-            {
-                for (var inner = outer; inner < cleanUrl.Length; inner++)
-                {
-                    var check = cleanUrl.Substring(outer, inner - outer);
-                    if (dictionary.ContainsKey(check))
-                    {
-                        wordsFound.Add(check);
-                    }
-                }
-            }
-            return wordsFound;
+            var wordsFound = from outer in Enumerable.Range(0, cleanUrl.Length)
+                               from inner in Enumerable.Range(outer, cleanUrl.Length - outer)
+                               where dictionary.ContainsKey(cleanUrl.Substring(outer, inner - outer))
+                               select cleanUrl.Substring(outer, inner - outer);
+
+            return wordsFound.ToList();
         }
         private static string CleanUrl(string urlValue)
         {
