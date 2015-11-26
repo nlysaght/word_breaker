@@ -13,6 +13,7 @@ namespace word_breaker
         {
             var dictionary = MakeDictionary();
             var wordsFound = WordsFromUrl(dictionary, "http://www.carphonewarehouse.com");
+            var joinedWords = string.Join(",", wordsFound);
         }
         private static List<string> WordsFromUrl(Dictionary<string, string> dictionary, string urlValue)
         {
